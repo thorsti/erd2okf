@@ -10,6 +10,7 @@ columns:
   nullable: false
   primary_key: true
   references: vehicles.id
+  references_file: ./vehicles.md
 - name: battery_capacity_mah
   type: integer
   nullable: false

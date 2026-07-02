@@ -14,10 +14,12 @@ columns:
   type: uuid
   nullable: false
   references: route_plans.id
+  references_file: ./route_plans.md
 - name: shipment_id
   type: uuid
   nullable: false
   references: shipments.id
+  references_file: ./shipments.md
 - name: sequence_order
   type: integer
   nullable: false

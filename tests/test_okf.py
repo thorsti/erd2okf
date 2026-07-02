@@ -50,6 +50,18 @@ def test_description_is_omitted_without_table_comment():
     assert "description" not in front
 
 
+def test_references_carry_a_relative_file_path():
+    """Design-Entscheidung vom 2026-07-02 (Thorsten): FK-Referenzen zeigen
+    zusätzlich als relativer File-Pfad auf das OKF-File der Zieltabelle.
+    """
+    front = yaml.safe_load(render(_vehicles()).split("---\n")[1])
+
+    by_name = {c["name"]: c for c in front["columns"]}
+    assert by_name["fleet_id"]["references"] == "vehicle_fleets.id"
+    assert by_name["fleet_id"]["references_file"] == "./vehicle_fleets.md"
+    assert "references_file" not in by_name["vin"]
+
+
 def test_render_produces_frontmatter_and_empty_body():
     text = render(_vehicles())
 

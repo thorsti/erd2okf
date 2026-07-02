@@ -13,6 +13,7 @@ columns:
   type: uuid
   nullable: false
   references: vehicles.id
+  references_file: ./vehicles.md
 - name: timestamp
   type: timestamp
   nullable: false

@@ -11,11 +11,13 @@ columns:
   nullable: false
   primary_key: true
   references: users.id
+  references_file: ./users.md
 - name: role_id
   type: uuid
   nullable: false
   primary_key: true
   references: roles.id
+  references_file: ./roles.md
 - name: assigned_at
   type: timestamp
   nullable: true
@@ -23,6 +25,7 @@ columns:
   type: uuid
   nullable: true
   references: users.id
+  references_file: ./users.md
 ---
 
 

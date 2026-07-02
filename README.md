@@ -48,6 +48,7 @@ columns:
   type: uuid
   nullable: false
   references: vehicle_fleets.id
+  references_file: ./vehicle_fleets.md
 ---
 
 Handgepflegte Semantik, z. B.: Der Status-Lifecycle ist idle → dispatched →
@@ -109,7 +110,11 @@ Die PoC-Erfolgskriterien aus der Vision sind wörtlich als Tests abgebildet:
 Nicht Teil dieses ersten Wurfs, in der Vision als Richtung genannt:
 Typ-Fingerprints pro Tabelle, Merge-Strategie für den Body, Rollout über mehrere Cluster.
 
-Offene Design-Frage: OKF baut seinen Knowledge Graph über Markdown-Cross-Links
-zwischen Files. `references: vehicle_fleets.id` ist hier bewusst Frontmatter-Daten,
-kein Link — auto-generierte Links müssten in den Body, und der wird per Design
-nie angefasst. Beides gleichzeitig geht nicht ohne Merge-Strategie.
+Zur Graph-Frage ist die Entscheidung gefallen: FK-Referenzen tragen als
+`references_file` einen relativen Pfad auf das OKF-File der Zieltabelle —
+maschinenlesbar und navigierbar, ohne den handgepflegten Body anzufassen.
+Bewusste Restlücke: Das sind keine Markdown-Links, die Spec-Graph-Mechanik
+(Links im Content bilden den Knowledge Graph) bedienen in den Tabellen-Files
+weiterhin nur nicht die Bodies — Markdown-Links gibt es bisher allein in der
+index.md. Echte Link-Sektionen in den Tabellen-Files (inkl. Backlinks) gingen
+nur über eine markierte generierte Sektion vor dem Body, siehe CLAUDE.md.

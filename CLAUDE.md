@@ -22,6 +22,8 @@ Saubere Lösungen:
   (z. B. zwischen HTML-Kommentar-Markern), die `generate` besitzt und neu
   schreibt, während alles danach unangetastet bleibt.
 
-Die Wahl zwischen beiden ist eine bewusste Design-Entscheidung mit Trade-offs
-(echte Spec-Graph-Mechanik vs. Einfachheit des Formats) — sie soll explizit
-fallen und begründet werden, nicht nebenbei als Fix für einen rot gewordenen Test.
+**Entscheidung vom 2026-07-02 (Thorsten):** Frontmatter-File-Pfade — jede
+FK-Spalte trägt `references_file: ./<tabelle>.md`. Markdown-Links gibt es
+in der index.md. Sollte später eine echte Link-Sektion in den Tabellen-Files
+gewünscht sein (z. B. für Backlinks), gilt weiterhin: nur als markierte
+generierte Sektion vor dem Body, nie im Body selbst.

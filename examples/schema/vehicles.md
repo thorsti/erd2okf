@@ -14,6 +14,7 @@ columns:
   type: uuid
   nullable: false
   references: vehicle_fleets.id
+  references_file: ./vehicle_fleets.md
 - name: vin
   type: text
   nullable: false

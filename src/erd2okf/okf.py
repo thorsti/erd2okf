@@ -26,6 +26,7 @@ def render(table: Table, body: str | None = None) -> str:
             entry["primary_key"] = True
         if col.references:
             entry["references"] = col.references
+            entry["references_file"] = f"./{col.references.split('.')[0]}.md"
         if col.comment:
             entry["description"] = col.comment
         columns.append(entry)

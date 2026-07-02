@@ -13,10 +13,12 @@ columns:
   type: uuid
   nullable: false
   references: companies.id
+  references_file: ./companies.md
 - name: parent_fleet_id
   type: uuid
   nullable: true
   references: vehicle_fleets.id
+  references_file: ./vehicle_fleets.md
 - name: name
   type: text
   nullable: false

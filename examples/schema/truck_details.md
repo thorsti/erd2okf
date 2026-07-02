@@ -10,6 +10,7 @@ columns:
   nullable: false
   primary_key: true
   references: vehicles.id
+  references_file: ./vehicles.md
 - name: max_cargo_weight_kg
   type: numeric
   nullable: false

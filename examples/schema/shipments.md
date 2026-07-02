@@ -13,6 +13,7 @@ columns:
   type: uuid
   nullable: false
   references: companies.id
+  references_file: ./companies.md
 - name: tracking_code
   type: text
   nullable: false
