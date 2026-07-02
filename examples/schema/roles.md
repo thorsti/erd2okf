@@ -17,4 +17,4 @@ columns:
   nullable: false
 ---
 
-Globale Rollenprofile mit einer Liste von Berechtigungs-Strings.
+

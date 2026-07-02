@@ -26,11 +26,12 @@ def test_writes_one_file_per_table(tmp_path):
     ]
 
 
-def test_seeds_body_from_table_comment_on_first_run(tmp_path):
+def test_body_starts_empty_comment_lives_only_in_description(tmp_path):
     generate([_table("companies", comment="Zentrale Mandantentabelle.")], tmp_path)
 
-    _, body = parse((tmp_path / "companies.md").read_text())
-    assert body == "Zentrale Mandantentabelle."
+    table, body = parse((tmp_path / "companies.md").read_text())
+    assert body == ""
+    assert table.comment == "Zentrale Mandantentabelle."
 
 
 def test_regeneration_preserves_hand_edited_body(tmp_path):
@@ -60,7 +61,10 @@ def test_removes_files_for_dropped_tables(tmp_path):
 
 def test_warns_before_removing_file_with_hand_written_body(tmp_path, capsys):
     """Kein stiller Semantik-Verlust: das unlink eines gefüllten Bodys wird benannt."""
-    generate([_table("legacy", comment="Handgepflegtes Wissen.")], tmp_path)
+    generate([_table("legacy")], tmp_path)
+    okf_file = tmp_path / "legacy.md"
+    front, sep, _body = okf_file.read_text().rpartition("---\n")
+    okf_file.write_text(front + sep + "\nHandgepflegtes Wissen.\n")
 
     generate([_table("other")], tmp_path)
 

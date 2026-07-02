@@ -1,7 +1,8 @@
 """OKF-Markdown: eine Datei pro Tabelle.
 
 Struktur (maschinenlesbar) im YAML-Frontmatter, Semantik (Freitext) im Body.
-Beim ersten Rendern wird der Body aus dem Tabellen-Comment der DB gesät.
+Der Tabellen-Comment aus der DB lebt nur im description-Feld; der Body
+startet leer und gehört ganz dem handgepflegten Wissen.
 
 OKF v0.1 verlangt pro Concept genau ein Pflichtfeld: `type`. `title` und
 `description` sind reservierte Felder der Spec; `okf` und `table`/`columns`
@@ -39,9 +40,7 @@ def render(table: Table, body: str | None = None) -> str:
         allow_unicode=True,
         default_flow_style=False,
     )
-    if body is None:
-        body = table.comment or ""
-    return f"---\n{front}---\n\n{body.strip()}\n"
+    return f"---\n{front}---\n\n{(body or '').strip()}\n"
 
 
 def parse(text: str) -> tuple[Table, str]:

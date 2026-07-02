@@ -50,14 +50,15 @@ def test_description_is_omitted_without_table_comment():
     assert "description" not in front
 
 
-def test_render_produces_frontmatter_and_body():
+def test_render_produces_frontmatter_and_empty_body():
     text = render(_vehicles())
 
     assert text.startswith("---\n")
     front, body = text.split("---\n", 2)[1:]
     assert "table: vehicles" in front
-    # Body wird beim ersten Wurf aus dem Tabellen-Comment gesät
-    assert "Stammdaten für Fahrzeuge aller Art." in body
+    # Der Tabellen-Comment lebt nur im description-Feld — keine Dopplung im Body
+    assert "Stammdaten für Fahrzeuge aller Art." in front
+    assert body.strip() == ""
 
 
 def test_render_parse_roundtrip_preserves_structure():
@@ -66,7 +67,7 @@ def test_render_parse_roundtrip_preserves_structure():
     table, body = parse(render(original))
 
     assert table == original
-    assert body.strip() == "Stammdaten für Fahrzeuge aller Art."
+    assert body == ""
 
 
 def test_render_with_explicit_body_keeps_that_body():

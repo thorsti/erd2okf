@@ -21,4 +21,4 @@ columns:
   nullable: false
 ---
 
-Erweiterte Attribute, falls das Fahrzeug eine Drohne ist (1:1 Relation).
+

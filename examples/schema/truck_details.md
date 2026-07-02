@@ -21,4 +21,4 @@ columns:
   nullable: true
 ---
 
-Erweiterte Attribute, falls das Fahrzeug ein LKW ist (1:1 Relation).
+

@@ -50,7 +50,8 @@ columns:
   references: vehicle_fleets.id
 ---
 
-Stammdaten für Fahrzeuge aller Art. Der Typ bestimmt, welche Sub-Details existieren.
+Handgepflegte Semantik, z. B.: Der Status-Lifecycle ist idle → dispatched →
+maintenance; "retired" gibt es nur historisch, neue Zeilen bekommen ihn nie.
 ```
 
 Die Files sind OKF-v0.1-konform: `type` ist das eine Pflichtfeld der Spec,
@@ -66,9 +67,9 @@ sie gehört vollständig `generate` und wird bei jeder Generierung neu geschrieb
 
 - **Frontmatter** wird bei jeder Generierung aus der DB neu geschrieben. Die DB ist
   System of Record; hand-editieren lohnt nicht, es wird überschrieben.
-- **Body** ist Freitext für Semantik. Er wird beim ersten Wurf aus `COMMENT ON TABLE`
-  gesät und bei Regenerationen **nie angefasst** — hier wächst das Wissen, das nicht
-  in der DB steht.
+- **Body** ist Freitext für Semantik und startet leer — der Tabellen-Comment steht
+  bereits in der `description`, eine Dopplung im Body gibt es nicht. Regenerationen
+  fassen den Body **nie an**; hier wächst das Wissen, das nicht in der DB steht.
 - Spalten-Comments aus der DB landen als `description` im Frontmatter.
 - Files zu gelöschten Tabellen werden entfernt (die Historie hält git) —
   hatte das File handgepflegte Semantik im Body, warnt `generate` dabei.

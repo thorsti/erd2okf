@@ -22,4 +22,4 @@ columns:
   nullable: false
 ---
 
-Ermöglicht unendlich tief verschachtelte Flottenstrukturen pro Mandant.
+

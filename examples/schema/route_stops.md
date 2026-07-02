@@ -29,4 +29,4 @@ columns:
   nullable: true
 ---
 
-Verknüpft Routen mit Sendungen. Bestimmt die exakte Reihenfolge von Be- und Entladungen.
+

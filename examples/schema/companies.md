@@ -26,4 +26,4 @@ columns:
   nullable: true
 ---
 
-Zentrale Mandantentabelle. Jedes Asset und jeder User muss einer Company zugeordnet sein.
+

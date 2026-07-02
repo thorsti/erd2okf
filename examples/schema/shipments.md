@@ -30,4 +30,4 @@ columns:
   nullable: true
 ---
 
-Frachtaufträge, die von den Fahrzeugen transportiert werden.
+

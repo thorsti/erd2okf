@@ -30,4 +30,4 @@ columns:
     2.5, 2.5]}'
 ---
 
-Massen-Telemetriedaten der Fahrzeuge. Extrem hohe Schreiblast.
+

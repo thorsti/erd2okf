@@ -28,4 +28,4 @@ columns:
   nullable: true
 ---
 
-Stammdaten für Fahrzeuge aller Art. Der Typ bestimmt, welche Sub-Details existieren.
+

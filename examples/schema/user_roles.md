@@ -25,4 +25,4 @@ columns:
   references: users.id
 ---
 
-Zuordnungstabelle für Rollen. Enthält Auditing-Metadaten, welcher User die Rolle vergeben hat.
+

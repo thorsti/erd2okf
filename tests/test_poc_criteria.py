@@ -120,12 +120,16 @@ def test_semantics_survive_regeneration(model_db, pg_dsn, tmp_path):
 
 
 def test_db_comments_land_in_the_files(model_db, pg_dsn, tmp_path):
+    """Vertragsänderung vom 2026-07-02, von Thorsten beauftragt: der Tabellen-Comment
+    lebt nur im description-Feld, der Body startet leer — keine Dopplung.
+    """
     main(["generate", "--dsn", pg_dsn, "--out", str(tmp_path)])
 
     table, body = parse((tmp_path / "companies.md").read_text())
-    assert body == (
+    assert table.comment == (
         "Zentrale Mandantentabelle. "
         "Jedes Asset und jeder User muss einer Company zugeordnet sein."
     )
+    assert body == ""
     settings = next(c for c in table.columns if c.name == "settings")
     assert settings.comment and "Feature-Flags" in settings.comment

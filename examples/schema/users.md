@@ -24,4 +24,4 @@ columns:
   nullable: true
 ---
 
-Mitarbeiter der jeweiligen Mandanten.
+
