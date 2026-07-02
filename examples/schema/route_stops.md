@@ -1,4 +1,8 @@
 ---
+type: database-table
+title: route_stops
+description: Verknüpft Routen mit Sendungen. Bestimmt die exakte Reihenfolge von Be-
+  und Entladungen.
 okf: 1
 table: route_stops
 columns:

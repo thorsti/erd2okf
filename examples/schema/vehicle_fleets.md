@@ -1,4 +1,7 @@
 ---
+type: database-table
+title: vehicle_fleets
+description: Ermöglicht unendlich tief verschachtelte Flottenstrukturen pro Mandant.
 okf: 1
 table: vehicle_fleets
 columns:

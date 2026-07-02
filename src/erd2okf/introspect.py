@@ -9,6 +9,9 @@ import psycopg
 
 from erd2okf.typeclass import type_class
 
+# Werkzeug-Buchhaltung, keine Schema-Doku
+DEFAULT_EXCLUDE = frozenset({"alembic_version"})
+
 
 @dataclass
 class Column:
@@ -75,7 +78,11 @@ WHERE con.contype = 'f' AND con.connamespace = %(schema)s::regnamespace
 """
 
 
-def introspect(conn: psycopg.Connection, schema: str = "public") -> list[Table]:
+def introspect(
+    conn: psycopg.Connection,
+    schema: str = "public",
+    exclude: frozenset[str] | set[str] = DEFAULT_EXCLUDE,
+) -> list[Table]:
     """Alle Basistabellen eines Schemas, sortiert nach Name."""
     params = {"schema": schema}
     table_comments = dict(conn.execute(_TABLE_COMMENTS_SQL, params).fetchall())
@@ -89,6 +96,8 @@ def introspect(conn: psycopg.Connection, schema: str = "public") -> list[Table]:
     for tname, cname, data_type, udt_name, nullable, comment in conn.execute(
         _COLUMNS_SQL, params
     ):
+        if tname in exclude:
+            continue
         table = tables.setdefault(
             tname, Table(name=tname, comment=table_comments.get(tname))
         )

@@ -33,6 +33,10 @@ Ein File pro Tabelle ([komplettes Beispiel](examples/schema/), generiert aus
 
 ```markdown
 ---
+type: database-table
+title: vehicles
+description: Stammdaten für Fahrzeuge aller Art. Der Typ bestimmt, welche Sub-Details
+  existieren.
 okf: 1
 table: vehicles
 columns:
@@ -49,14 +53,21 @@ columns:
 Stammdaten für Fahrzeuge aller Art. Der Typ bestimmt, welche Sub-Details existieren.
 ```
 
+Die Files sind OKF-v0.1-konform: `type` ist das eine Pflichtfeld der Spec,
+`title` und `description` sind reservierte Spec-Felder (description spiegelt immer
+den `COMMENT ON TABLE` aus der DB), `okf`, `table` und `columns` sind Custom-Felder.
+
 - **Frontmatter** wird bei jeder Generierung aus der DB neu geschrieben. Die DB ist
   System of Record; hand-editieren lohnt nicht, es wird überschrieben.
 - **Body** ist Freitext für Semantik. Er wird beim ersten Wurf aus `COMMENT ON TABLE`
   gesät und bei Regenerationen **nie angefasst** — hier wächst das Wissen, das nicht
   in der DB steht.
 - Spalten-Comments aus der DB landen als `description` im Frontmatter.
-- Files zu gelöschten Tabellen werden entfernt (die Historie hält git),
-  fremde `.md` im Ordner (z. B. ein README) bleiben unberührt.
+- Files zu gelöschten Tabellen werden entfernt (die Historie hält git) —
+  hatte das File handgepflegte Semantik im Body, warnt `generate` dabei.
+  Fremde `.md` im Ordner (z. B. ein README) bleiben unberührt.
+- Werkzeug-Buchhaltung wie `alembic_version` wird nicht dokumentiert;
+  weitere Tabellen lassen sich per `--exclude` ausschließen.
 
 ## Was grün bedeutet
 
@@ -89,3 +100,8 @@ Die PoC-Erfolgskriterien aus der Vision sind wörtlich als Tests abgebildet:
 
 Nicht Teil dieses ersten Wurfs, in der Vision als Richtung genannt:
 Typ-Fingerprints pro Tabelle, Merge-Strategie für den Body, Rollout über mehrere Cluster.
+
+Offene Design-Frage: OKF baut seinen Knowledge Graph über Markdown-Cross-Links
+zwischen Files. `references: vehicle_fleets.id` ist hier bewusst Frontmatter-Daten,
+kein Link — auto-generierte Links müssten in den Body, und der wird per Design
+nie angefasst. Beides gleichzeitig geht nicht ohne Merge-Strategie.

@@ -5,6 +5,7 @@ bleibt bei Regeneration unangetastet. Files zu gelöschten Tabellen
 werden entfernt (die Historie hält git).
 """
 
+import sys
 from pathlib import Path
 
 from erd2okf.introspect import Table
@@ -37,4 +38,11 @@ def generate(tables: list[Table], out_dir: Path) -> None:
         (out_dir / f"{table.name}.md").write_text(render(table, body=body))
 
     for orphan in existing.values():
+        _, body = parse(orphan.read_text())
+        if body:
+            print(
+                f"Warnung: {orphan.name} entfernt, hatte handgepflegte Semantik "
+                "im Body (die Historie hält git)",
+                file=sys.stderr,
+            )
         orphan.unlink()

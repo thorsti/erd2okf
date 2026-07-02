@@ -88,8 +88,8 @@ def test_semantics_survive_regeneration(model_db, pg_dsn, tmp_path):
         "## Gelernt im Betrieb\n\n"
         "Soft-Delete läuft über is_active, nie über DELETE."
     )
-    _, old_body = parse(users_file.read_text())
-    users_file.write_text(users_file.read_text().replace(old_body, semantics))
+    front, sep, _old_body = users_file.read_text().rpartition("---\n")
+    users_file.write_text(front + sep + "\n" + semantics + "\n")
 
     model_db.execute("ALTER TABLE users ADD COLUMN last_login TIMESTAMPTZ")
     main(["generate", "--dsn", pg_dsn, "--out", str(tmp_path)])

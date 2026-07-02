@@ -1,4 +1,7 @@
 ---
+type: database-table
+title: users
+description: Mitarbeiter der jeweiligen Mandanten.
 okf: 1
 table: users
 columns:

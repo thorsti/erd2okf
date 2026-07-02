@@ -8,7 +8,7 @@ import psycopg
 
 from erd2okf.diff import diff
 from erd2okf.generate import generate
-from erd2okf.introspect import introspect
+from erd2okf.introspect import DEFAULT_EXCLUDE, introspect
 from erd2okf.okf import parse
 
 
@@ -29,6 +29,15 @@ def _build_parser() -> argparse.ArgumentParser:
     check.add_argument("--dir", required=True, type=Path, help="OKF-Ordner")
     check.add_argument("--schema", default="public")
 
+    for cmd in (gen, check):
+        cmd.add_argument(
+            "--exclude",
+            action="append",
+            default=[],
+            metavar="TABLE",
+            help=f"Tabelle zusätzlich ausschließen (Standard: {', '.join(sorted(DEFAULT_EXCLUDE))})",
+        )
+
     return parser
 
 
@@ -46,8 +55,9 @@ def _load_documented(okf_dir: Path):
 def main(argv: list[str] | None = None) -> int:
     args = _build_parser().parse_args(argv)
 
+    exclude = DEFAULT_EXCLUDE | set(args.exclude)
     with psycopg.connect(args.dsn) as conn:
-        db_tables = introspect(conn, schema=args.schema)
+        db_tables = introspect(conn, schema=args.schema, exclude=exclude)
 
     if args.command == "generate":
         generate(db_tables, args.out)

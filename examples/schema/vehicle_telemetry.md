@@ -1,4 +1,7 @@
 ---
+type: database-table
+title: vehicle_telemetry
+description: Massen-Telemetriedaten der Fahrzeuge. Extrem hohe Schreiblast.
 okf: 1
 table: vehicle_telemetry
 columns:

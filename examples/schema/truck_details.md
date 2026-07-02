@@ -1,4 +1,7 @@
 ---
+type: database-table
+title: truck_details
+description: Erweiterte Attribute, falls das Fahrzeug ein LKW ist (1:1 Relation).
 okf: 1
 table: truck_details
 columns:

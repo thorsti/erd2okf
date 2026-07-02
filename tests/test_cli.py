@@ -43,6 +43,16 @@ def test_check_is_green_for_change_below_type_class(db, pg_dsn, tmp_path):
     assert exit_code == 0
 
 
+def test_exclude_flag_extends_the_default_exclude_list(db, pg_dsn, tmp_path):
+    db.execute("CREATE TABLE companies (id UUID PRIMARY KEY)")
+    db.execute("CREATE TABLE scratch (id UUID PRIMARY KEY)")
+    db.execute("CREATE TABLE alembic_version (version_num VARCHAR(32) PRIMARY KEY)")
+
+    main(["generate", "--dsn", pg_dsn, "--out", str(tmp_path), "--exclude", "scratch"])
+
+    assert {p.name for p in tmp_path.glob("*.md")} == {"companies.md"}
+
+
 def test_check_fails_loudly_when_dir_missing(pg_dsn, tmp_path, capsys):
     exit_code = main(["check", "--dsn", pg_dsn, "--dir", str(tmp_path / "nope")])
 

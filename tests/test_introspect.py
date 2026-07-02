@@ -79,6 +79,23 @@ def test_composite_primary_key_marks_all_members(db):
     assert cols["taken_at"].type == "timestamp"
 
 
+def test_migration_bookkeeping_is_excluded_by_default(db):
+    """alembic_version ist Werkzeug-Buchhaltung, keine Schema-Doku."""
+    db.execute("CREATE TABLE alembic_version (version_num VARCHAR(32) PRIMARY KEY)")
+    db.execute("CREATE TABLE users (id UUID PRIMARY KEY)")
+
+    assert [t.name for t in introspect(db)] == ["users"]
+
+
+def test_exclude_list_is_extendable(db):
+    db.execute("CREATE TABLE users (id UUID PRIMARY KEY)")
+    db.execute("CREATE TABLE scratch (id UUID PRIMARY KEY)")
+
+    tables = introspect(db, exclude={"scratch"})
+
+    assert [t.name for t in tables] == ["users"]
+
+
 def test_tables_and_columns_keep_stable_order(db):
     db.execute("CREATE TABLE zebra (b TEXT, a TEXT)")
     db.execute("CREATE TABLE apple (x TEXT)")

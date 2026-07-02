@@ -1,4 +1,7 @@
 ---
+type: database-table
+title: roles
+description: Globale Rollenprofile mit einer Liste von Berechtigungs-Strings.
 okf: 1
 table: roles
 columns:

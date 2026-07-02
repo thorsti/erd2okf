@@ -1,6 +1,7 @@
 """OKF-Format: Struktur im YAML-Frontmatter, Semantik im Freitext-Body."""
 
 import pytest
+import yaml
 
 from erd2okf.introspect import Column, Table
 from erd2okf.okf import parse, render
@@ -26,6 +27,27 @@ def _vehicles() -> Table:
             ),
         ],
     )
+
+
+def test_frontmatter_is_okf_spec_conformant():
+    """OKF v0.1: genau ein Pflichtfeld pro Concept — type. title/description sind reserviert."""
+    front = yaml.safe_load(render(_vehicles()).split("---\n")[1])
+
+    assert front["type"] == "database-table"
+    assert front["title"] == "vehicles"
+    assert front["description"] == "Stammdaten für Fahrzeuge aller Art."
+
+
+def test_description_is_omitted_without_table_comment():
+    table = Table(
+        name="route_plans",
+        columns=[Column(name="id", type="uuid", nullable=False, primary_key=True)],
+    )
+
+    front = yaml.safe_load(render(table).split("---\n")[1])
+
+    assert front["type"] == "database-table"
+    assert "description" not in front
 
 
 def test_render_produces_frontmatter_and_body():

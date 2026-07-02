@@ -35,10 +35,8 @@ def test_seeds_body_from_table_comment_on_first_run(tmp_path):
 def test_regeneration_preserves_hand_edited_body(tmp_path):
     generate([_table("users", comment="Aus der DB.")], tmp_path)
     okf_file = tmp_path / "users.md"
-    text = okf_file.read_text()
-    okf_file.write_text(
-        text.replace("Aus der DB.", "Handgepflegt: users.email ist der Login.")
-    )
+    front, sep, _body = okf_file.read_text().rpartition("---\n")
+    okf_file.write_text(front + sep + "\nHandgepflegt: users.email ist der Login.\n")
 
     # Struktur ändert sich (neue Spalte), Semantik muss stehen bleiben
     generate([_table("users", comment="Aus der DB.", cols=("id", "email"))], tmp_path)
@@ -54,6 +52,24 @@ def test_removes_files_for_dropped_tables(tmp_path):
     generate([_table("companies")], tmp_path)
 
     assert [p.name for p in tmp_path.glob("*.md")] == ["companies.md"]
+
+
+def test_warns_before_removing_file_with_hand_written_body(tmp_path, capsys):
+    """Kein stiller Semantik-Verlust: das unlink eines gefüllten Bodys wird benannt."""
+    generate([_table("legacy", comment="Handgepflegtes Wissen.")], tmp_path)
+
+    generate([_table("other")], tmp_path)
+
+    err = capsys.readouterr().err
+    assert "legacy.md" in err and "git" in err
+
+
+def test_removing_file_with_empty_body_is_silent(tmp_path, capsys):
+    generate([_table("legacy")], tmp_path)
+
+    generate([_table("other")], tmp_path)
+
+    assert capsys.readouterr().err == ""
 
 
 def test_leaves_non_okf_files_alone(tmp_path):

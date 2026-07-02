@@ -1,4 +1,6 @@
 ---
+type: database-table
+title: route_plans
 okf: 1
 table: route_plans
 columns:

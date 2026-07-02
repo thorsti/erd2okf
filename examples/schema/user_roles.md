@@ -1,4 +1,8 @@
 ---
+type: database-table
+title: user_roles
+description: Zuordnungstabelle für Rollen. Enthält Auditing-Metadaten, welcher User
+  die Rolle vergeben hat.
 okf: 1
 table: user_roles
 columns:

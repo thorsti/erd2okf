@@ -1,4 +1,8 @@
 ---
+type: database-table
+title: companies
+description: Zentrale Mandantentabelle. Jedes Asset und jeder User muss einer Company
+  zugeordnet sein.
 okf: 1
 table: companies
 columns:

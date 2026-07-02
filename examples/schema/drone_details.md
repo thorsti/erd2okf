@@ -1,4 +1,7 @@
 ---
+type: database-table
+title: drone_details
+description: Erweiterte Attribute, falls das Fahrzeug eine Drohne ist (1:1 Relation).
 okf: 1
 table: drone_details
 columns:

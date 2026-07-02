@@ -1,4 +1,8 @@
 ---
+type: database-table
+title: vehicles
+description: Stammdaten für Fahrzeuge aller Art. Der Typ bestimmt, welche Sub-Details
+  existieren.
 okf: 1
 table: vehicles
 columns:

@@ -1,4 +1,7 @@
 ---
+type: database-table
+title: shipments
+description: Frachtaufträge, die von den Fahrzeugen transportiert werden.
 okf: 1
 table: shipments
 columns:
