@@ -57,6 +57,13 @@ Die Files sind OKF-v0.1-konform: `type` ist das eine Pflichtfeld der Spec,
 `title` und `description` sind reservierte Spec-Felder (description spiegelt immer
 den `COMMENT ON TABLE` aus der DB), `okf`, `table` und `columns` sind Custom-Felder.
 
+Dazu schreibt `generate` die [index.md](examples/schema/index.md), die OKF pro
+Verzeichnis vorsieht (progressive Disclosure): eine verlinkte Tabellen-Übersicht
+als Einstiegspunkt für Agenten plus ein Mermaid-ERD, das GitHub direkt rendert —
+das aktuelle Diagramm ist damit jederzeit aus den Files rekonstruierbar.
+Anders als die Tabellen-Files hat die index.md keinen handgepflegten Anteil:
+sie gehört vollständig `generate` und wird bei jeder Generierung neu geschrieben.
+
 - **Frontmatter** wird bei jeder Generierung aus der DB neu geschrieben. Die DB ist
   System of Record; hand-editieren lohnt nicht, es wird überschrieben.
 - **Body** ist Freitext für Semantik. Er wird beim ersten Wurf aus `COMMENT ON TABLE`

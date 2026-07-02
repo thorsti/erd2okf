@@ -7,6 +7,7 @@ oder die Semantik bei einer Regeneration verloren geht.
 from pathlib import Path
 
 import pytest
+import yaml
 
 from erd2okf.cli import main
 from erd2okf.okf import parse
@@ -28,10 +29,29 @@ def model_db(db):
 
 
 def test_every_table_becomes_a_file(model_db, pg_dsn, tmp_path):
-    """Namens-Set DB gleich Namens-Set Files."""
+    """Namens-Set DB gleich Namens-Set Files, plus die index.md der OKF-Spec.
+
+    Vertragserweiterung vom 2026-07-02, von Thorsten autorisiert: OKF sieht
+    eine index.md pro Verzeichnis vor (progressive Disclosure).
+    """
     main(["generate", "--dsn", pg_dsn, "--out", str(tmp_path)])
 
-    assert {p.stem for p in tmp_path.glob("*.md")} == ALL_TABLES
+    assert {p.stem for p in tmp_path.glob("*.md")} == ALL_TABLES | {"index"}
+
+
+def test_index_is_okf_conformant_and_links_every_table(model_db, pg_dsn, tmp_path):
+    """Vertragserweiterung vom 2026-07-02: die index.md ist der Einstiegspunkt.
+
+    Sie trägt das Pflichtfeld der Spec und verlinkt jede Tabelle als
+    Markdown-Link — daraus ist das ERD rekonstruierbar.
+    """
+    main(["generate", "--dsn", pg_dsn, "--out", str(tmp_path)])
+
+    text = (tmp_path / "index.md").read_text()
+    front = yaml.safe_load(text.split("---\n")[1])
+    assert front["type"]
+    for table in ALL_TABLES:
+        assert f"](./{table}.md)" in text
 
 
 def test_fresh_generate_is_green(model_db, pg_dsn, tmp_path):

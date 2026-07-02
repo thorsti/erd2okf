@@ -21,6 +21,7 @@ def test_writes_one_file_per_table(tmp_path):
 
     assert sorted(p.name for p in tmp_path.glob("*.md")) == [
         "companies.md",
+        "index.md",
         "users.md",
     ]
 
@@ -51,7 +52,10 @@ def test_removes_files_for_dropped_tables(tmp_path):
 
     generate([_table("companies")], tmp_path)
 
-    assert [p.name for p in tmp_path.glob("*.md")] == ["companies.md"]
+    assert sorted(p.name for p in tmp_path.glob("*.md")) == [
+        "companies.md",
+        "index.md",
+    ]
 
 
 def test_warns_before_removing_file_with_hand_written_body(tmp_path, capsys):

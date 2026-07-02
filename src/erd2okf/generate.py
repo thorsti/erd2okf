@@ -8,6 +8,7 @@ werden entfernt (die Historie hält git).
 import sys
 from pathlib import Path
 
+from erd2okf.index import render_index
 from erd2okf.introspect import Table
 from erd2okf.okf import parse, render
 
@@ -24,8 +25,8 @@ def _existing_okf_files(out_dir: Path) -> dict[str, Path]:
     return found
 
 
-def generate(tables: list[Table], out_dir: Path) -> None:
-    """Ein OKF-File pro Tabelle; Bodies bestehender Files bleiben erhalten."""
+def generate(tables: list[Table], out_dir: Path, title: str = "Schema") -> None:
+    """Ein OKF-File pro Tabelle plus index.md; Bodies bestehender Files bleiben erhalten."""
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     existing = _existing_okf_files(out_dir)
@@ -46,3 +47,5 @@ def generate(tables: list[Table], out_dir: Path) -> None:
                 file=sys.stderr,
             )
         orphan.unlink()
+
+    (out_dir / "index.md").write_text(render_index(tables, title))

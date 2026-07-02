@@ -50,7 +50,7 @@ def test_exclude_flag_extends_the_default_exclude_list(db, pg_dsn, tmp_path):
 
     main(["generate", "--dsn", pg_dsn, "--out", str(tmp_path), "--exclude", "scratch"])
 
-    assert {p.name for p in tmp_path.glob("*.md")} == {"companies.md"}
+    assert {p.name for p in tmp_path.glob("*.md")} == {"companies.md", "index.md"}
 
 
 def test_check_fails_loudly_when_dir_missing(pg_dsn, tmp_path, capsys):

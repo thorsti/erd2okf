@@ -58,9 +58,11 @@ def main(argv: list[str] | None = None) -> int:
     exclude = DEFAULT_EXCLUDE | set(args.exclude)
     with psycopg.connect(args.dsn) as conn:
         db_tables = introspect(conn, schema=args.schema, exclude=exclude)
+        dbname = conn.info.dbname
 
     if args.command == "generate":
-        generate(db_tables, args.out)
+        title = dbname if args.schema == "public" else f"{dbname}.{args.schema}"
+        generate(db_tables, args.out, title=title)
         print(f"{len(db_tables)} Tabellen nach {args.out} geschrieben")
         return 0
 
